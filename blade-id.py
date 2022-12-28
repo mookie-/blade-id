@@ -3,19 +3,24 @@ import board
 import neopixel
 import psutil
 import RPi.GPIO as GPIO
+import configparser
+
+config = configparser.RawConfigParser()
+config_path = r'/etc/blade-id.conf'
+config.read(config_path)
 
 g,r,b = 0,0,0
-mintemp = 40 #Temperature Boundaries. Closer to this is green
-maxtemp = 70 #Temperature Boundaries. Closer to this is red
-LEDbrightness = 0.2 #Yes, you can change the brightness here
-Button = 20
+mintemp = config['main'].getint('mintemp', 30)
+maxtemp = config['main'].getint('maxtemp', 50)
+brightness = config['main'].getfloat('brightness', 0.2)
+button = config['main'].getint('button_gpio', 20)
 flag = 0
 
 GPIO.setwarnings(False)
 GPIO.setmode(GPIO.BCM)
-GPIO.setup(Button,GPIO.IN,pull_up_down=GPIO.PUD_UP)
+GPIO.setup(button,GPIO.IN,pull_up_down=GPIO.PUD_UP)
 pixels = neopixel.NeoPixel(
-    board.D18, 2, brightness=LEDbrightness, auto_write=False, pixel_order=neopixel.GRB
+    board.D18, 2, brightness=brightness, auto_write=False, pixel_order=neopixel.GRB
 )
 
 def show(percent, pixel):
@@ -33,7 +38,7 @@ def show(percent, pixel):
 while True:
     temp = int(round(psutil.sensors_temperatures()["cpu_thermal"][0].current))
 #    print('temp = ', temp)
-    button_state = GPIO.input(Button)
+    button_state = GPIO.input(button)
     if mintemp <= temp <= maxtemp:
         temp = temp - mintemp
         mtemp = maxtemp - mintemp
