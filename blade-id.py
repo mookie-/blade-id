@@ -60,6 +60,6 @@ while True:
     if flag == 1:
         print('Blade ID is active')
         pixels[1] = (0, 0, 255)
-
+        pixels.show()
     else:
         print('Blade ID isn\'t active')
