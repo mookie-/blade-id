@@ -10,7 +10,7 @@ config = configparser.RawConfigParser()
 config_path = r'/etc/blade-id.conf'
 config.read(config_path)
 
-g,r,b = 0,0,0
+g, r, b = 0, 0, 0
 mintemp = config['main'].getint('mintemp', 30)
 maxtemp = config['main'].getint('maxtemp', 50)
 brightness = config['main'].getfloat('brightness', 0.2)
@@ -20,18 +20,21 @@ flag = 0
 
 GPIO.setwarnings(False)
 GPIO.setmode(GPIO.BCM)
-GPIO.setup(button,GPIO.IN,pull_up_down=GPIO.PUD_UP)
+GPIO.setup(button, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 pixels = neopixel.NeoPixel(
     board.D18, 2, brightness=brightness, auto_write=False, pixel_order=neopixel.GRB
 )
 
+
 def signal_handler(signum, frame):
-  signame = signal.Signals(signum).name
-  print(f'signal ${signame}')
-  global flag
-  flag = 1
+    signame = signal.Signals(signum).name
+    print(f'signal ${signame}')
+    global flag
+    flag = 1
+
 
 signal.signal(signal.SIGUSR1, signal_handler)
+
 
 def show(percent, pixel):
     a = int(round((510 / 100) * percent))
@@ -43,6 +46,7 @@ def show(percent, pixel):
         g = 255
     pixels[pixel] = (g, r, b)
     pixels.show()
+
 
 while True:
     temp = int(round(psutil.sensors_temperatures()["cpu_thermal"][0].current))
