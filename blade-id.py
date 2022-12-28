@@ -4,6 +4,7 @@ import neopixel
 import psutil
 import RPi.GPIO as GPIO
 import configparser
+import signal
 
 config = configparser.RawConfigParser()
 config_path = r'/etc/blade-id.conf'
@@ -23,6 +24,14 @@ GPIO.setup(button,GPIO.IN,pull_up_down=GPIO.PUD_UP)
 pixels = neopixel.NeoPixel(
     board.D18, 2, brightness=brightness, auto_write=False, pixel_order=neopixel.GRB
 )
+
+def signal_handler(signum, frame):
+  signame = signal.Signals(signum).name
+  print(f'signal ${signame}')
+  global flag
+  flag = 1
+
+signal.signal(signal.SIGUSR1, signal_handler)
 
 def show(percent, pixel):
     a = int(round((510 / 100) * percent))
