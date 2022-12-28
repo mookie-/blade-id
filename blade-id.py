@@ -34,11 +34,9 @@ def show(percent, pixel):
         g = 255
     pixels[pixel] = (g, r, b)
     pixels.show()
-#    return print('showed', a, 'on', pixel)
 
 while True:
     temp = int(round(psutil.sensors_temperatures()["cpu_thermal"][0].current))
-#    print('temp = ', temp)
     button_state = GPIO.input(button)
     if mintemp <= temp <= maxtemp:
         temp = temp - mintemp
@@ -53,7 +51,6 @@ while True:
     sleep(0.1)
 
     load = psutil.cpu_percent()
- #   print('load = ', load)
     show(load, 1)
     sleep(0.1)
 
@@ -64,10 +61,8 @@ while True:
         else:
             flag = 0
     if flag == 1:
-        print('Blade ID is active')
         pixels[1] = (0, 0, 255)
         pixels.brightness = brightness_id_active
         pixels.show()
     else:
-        print('Blade ID isn\'t active')
         pixels.brightness = brightness
