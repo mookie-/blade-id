@@ -7,5 +7,9 @@ mintemp=30
 maxtemp=60
 # Configure the default brightness of the LEDs (between 0 and 1).
 brightness=0.2
+# Configure the brightness of the LEDs when ID is active.
+# If you default brightness is low, it's easier to see the ID
+# if the brightness gets increased when ID is active.
+brightness_id_active=1
 # Button GPIO
 button_gpio=20

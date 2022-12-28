@@ -13,6 +13,7 @@ g,r,b = 0,0,0
 mintemp = config['main'].getint('mintemp', 30)
 maxtemp = config['main'].getint('maxtemp', 50)
 brightness = config['main'].getfloat('brightness', 0.2)
+brightness_id_active = config['main'].getfloat('brightness_id_active', 1)
 button = config['main'].getint('button_gpio', 20)
 flag = 0
 
@@ -65,6 +66,8 @@ while True:
     if flag == 1:
         print('Blade ID is active')
         pixels[1] = (0, 0, 255)
+        pixels.brightness = brightness_id_active
         pixels.show()
     else:
         print('Blade ID isn\'t active')
+        pixels.brightness = brightness
