@@ -1,4 +1,5 @@
 from time import sleep
+from os.path import exists
 import board
 import neopixel
 import psutil
@@ -6,17 +7,26 @@ import RPi.GPIO as GPIO
 import configparser
 import signal
 
-config = configparser.RawConfigParser()
-config_path = r'/etc/blade-id.conf'
-config.read(config_path)
-
 g, r, b = 0, 0, 0
-mintemp = config['main'].getint('mintemp', 30)
-maxtemp = config['main'].getint('maxtemp', 50)
-brightness = config['main'].getfloat('brightness', 0.2)
-brightness_id_active = config['main'].getfloat('brightness_id_active', 1)
-button = config['main'].getint('button_gpio', 20)
 flag = 0
+
+if exists('/etc/blade-id.conf'):
+    config = configparser.RawConfigParser()
+    config_path = r'/etc/blade-id.conf'
+    config.read(config_path)
+
+    mintemp = config['main'].getint('mintemp', 30)
+    maxtemp = config['main'].getint('maxtemp', 50)
+    brightness = config['main'].getfloat('brightness', 0.2)
+    brightness_id_active = config['main'].getfloat('brightness_id_active', 1)
+    button = config['main'].getint('button_gpio', 20)
+else:
+    mintemp = 30
+    maxtemp = 50
+    brightness = 0.2
+    brightness_id_active = 1
+    button = 20
+
 
 GPIO.setwarnings(False)
 GPIO.setmode(GPIO.BCM)
