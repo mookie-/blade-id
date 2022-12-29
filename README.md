@@ -7,7 +7,28 @@ It is still in an experimental stage.
 
 ## How to use
 
-There are three files:
+You need to install `python3-pip`:
+
+```
+sudo apt-get install python3-pip
+```
+
+and then [install the NeoPixel Library](https://learn.adafruit.com/neopixels-on-raspberry-pi/python-usage):
+
+```
+sudo pip3 install rpi_ws281x adafruit-circuitpython-neopixel
+```
+
+As of 29th December 2022, if your Raspberry PI CM4 is newer (e.g. `Compute Module 4 Rev 1.1` from `cat /proc/cpuinfo`)
+you will probably get this error:
+
+```
+RuntimeError: ws2811_init failed with code -3 (Hardware revision is not supported)
+```
+
+Then you will need to build `rpi_ws281x` yourself, see [this Github Issue](https://github.com/rpi-ws281x/rpi-ws281x-python/issues/56#issuecomment-753320723).
+
+For the blade-id setup, there are three files:
 
 ### blade-id.py
 
@@ -20,6 +41,7 @@ You can disable the ID feature by pressing the button or sending SIGUSR2 to the 
 ### blade-id.conf.example
 
 This is an example configuration. The `blade-id.py` script expects a configuration in `/etc/blade-id.conf`.
+If the configuration does not exist, it will use default values.
 
 ### systemd/blade-id.service
 
