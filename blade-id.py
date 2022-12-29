@@ -9,28 +9,33 @@ import signal
 
 g, r, b = 0, 0, 0
 flag = 0
+default_mintemp = 40
+default_maxtemp = 60
+default_brightness = 0.2
+default_brightness_id_active = 1
+default_button_gpio = 20
 
 if exists('/etc/blade-id.conf'):
     config = configparser.RawConfigParser()
     config_path = r'/etc/blade-id.conf'
     config.read(config_path)
 
-    mintemp = config['main'].getint('mintemp', 30)
-    maxtemp = config['main'].getint('maxtemp', 50)
-    brightness = config['main'].getfloat('brightness', 0.2)
-    brightness_id_active = config['main'].getfloat('brightness_id_active', 1)
-    button = config['main'].getint('button_gpio', 20)
+    mintemp = config['main'].getint('mintemp', default_mintemp)
+    maxtemp = config['main'].getint('maxtemp', default_maxtemp)
+    brightness = config['main'].getfloat('brightness', default_brightness)
+    brightness_id_active = config['main'].getfloat('brightness_id_active', default_brightness_id_active)
+    button_gpio = config['main'].getint('button_gpio', default_button_gpio)
 else:
-    mintemp = 30
-    maxtemp = 50
-    brightness = 0.2
-    brightness_id_active = 1
-    button = 20
+    mintemp = default_mintemp
+    maxtemp = default_maxtemp
+    brightness = default_brightness
+    brightness_id_active = default_brightness_id_active
+    button_gpio = default_button_gpio
 
 
 GPIO.setwarnings(False)
 GPIO.setmode(GPIO.BCM)
-GPIO.setup(button, GPIO.IN, pull_up_down=GPIO.PUD_UP)
+GPIO.setup(button_gpio, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 pixels = neopixel.NeoPixel(
     board.D18, 2, brightness=brightness, auto_write=False, pixel_order=neopixel.GRB
 )
@@ -64,7 +69,7 @@ def show(percent, pixel):
 
 while True:
     temp = int(round(psutil.sensors_temperatures()["cpu_thermal"][0].current))
-    button_state = GPIO.input(button)
+    button_state = GPIO.input(button_gpio)
     if mintemp <= temp <= maxtemp:
         temp = temp - mintemp
         mtemp = maxtemp - mintemp
