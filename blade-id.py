@@ -41,9 +41,9 @@ def signal_handler(signum, frame):
     print(f'signal ${signame}')
     global flag
     if signame == 'SIGUSR1':
-      flag = 1
+        flag = 1
     elif signame == 'SIGUSR2':
-      flag = 0
+        flag = 0
 
 
 signal.signal(signal.SIGUSR1, signal_handler)
