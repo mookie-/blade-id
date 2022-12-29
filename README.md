@@ -15,6 +15,7 @@ This is the script which runs in an endless loop and checks the temperature and 
 It set's the colors of the two RGB LEDs to a color between green and red depending on the temperature and load.
 It also can let the front LED blink blue to ID a specific blade.
 You can enable the ID feature by pressing the button or sending SIGUSR1 to the python process.
+You can disable the ID feature by pressing the button or sending SIGUSR2 to the python process.
 
 ### blade-id.conf.example
 

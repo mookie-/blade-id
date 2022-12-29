@@ -30,10 +30,14 @@ def signal_handler(signum, frame):
     signame = signal.Signals(signum).name
     print(f'signal ${signame}')
     global flag
-    flag = 1
+    if signame == 'SIGUSR1':
+      flag = 1
+    elif signame == 'SIGUSR2':
+      flag = 0
 
 
 signal.signal(signal.SIGUSR1, signal_handler)
+signal.signal(signal.SIGUSR2, signal_handler)
 
 
 def show(percent, pixel):
