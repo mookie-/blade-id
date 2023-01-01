@@ -67,3 +67,17 @@ If the configuration does not exist, it will use default values.
 ### systemd/blade-id.service
 
 This is an example systemd unit file to let to start/supervise the python script.
+
+## Usage
+
+Enable ID LED:
+
+```
+systemctl kill --signal=USR1 blade-id
+```
+
+Disable ID LED:
+
+```
+systemctl kill --signal=USR2 blade-id
+```
