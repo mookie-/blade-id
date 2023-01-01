@@ -1,3 +1,5 @@
+#!/usr/bin/python
+
 from time import sleep
 from os.path import exists
 import board
@@ -55,6 +57,8 @@ signal.signal(signal.SIGUSR1, signal_handler)
 signal.signal(signal.SIGUSR2, signal_handler)
 
 
+# This function originates from this repository:
+# https://github.com/merocle/FanUnit
 def show(percent, pixel):
     a = int(round((510 / 100) * percent))
     if a > 255:

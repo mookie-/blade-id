@@ -1,4 +1,6 @@
 [Unit]
 Description=Run the blade-id python script
 [Service]
-ExecStart=/usr/bin/python /usr/local/bin/blade-id.py
+ExecStart=/usr/bin/blade-id
+[Install]
+WantedBy=multi-user.target
